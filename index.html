@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suspect Card</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Suspects</th>
+            </tr>
+        </thead>
+        <tbody id="suspect-table-body">
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Weapons</th>
+            </tr>
+        </thead>
+        <tbody id="weapon-table-body">
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Places</th>
+            </tr>
+        </thead>
+        <tbody id="place-table-body">
+        </tbody>
+    </table>
+    <footer>
+        <script>
+            function normalizeName(name) {
+                return name.trim().replace(/\s/g, '');
+            }
+
+            function getTableCard(name) {
+                let normalizedName = normalizeName(name);
+
+                return `<tr>
+                <td>${name}</td>
+                <td>
+                    <label>
+                        <input name="${normalizedName}-group" type="radio" />
+                        <span>No</span>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input name="${normalizedName}-group" type="radio" />
+                        <span>Yes</span>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input name="${normalizedName}-group" type="radio" />
+                        <span>Maybe</span>
+                    </label>
+                </td>
+            </tr>`
+            }
+
+            function setGroupTableRowHtml(groupArray, tableBodyId) {
+                let tableRowHtml = '';
+                for (var i = 0; i < groupArray.length; i++)
+                    tableRowHtml += getTableCard(groupArray[i]);
+
+                document.getElementById(tableBodyId).innerHTML = tableRowHtml;
+            }
+
+            setGroupTableRowHtml(['Orchid','Green', 'Mustard', 'Peacock', 'Plum', 'Scarlett'], 'suspect-table-body');
+            setGroupTableRowHtml(['Dagger', 'Candlestick', 'Revolver', 'Rope', 'Pipe', 'Wrench'], 'weapon-table-body');
+            setGroupTableRowHtml(['Hall', 'Lounge', 'Dining Room', 'Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study'], 'place-table-body');
+
+        </script>
+    </footer>
+
+</body>
+
+</html>
