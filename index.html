@@ -8,41 +8,55 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 </head>
 
-<body>
-    <table>
-        <thead>
-            <tr>
-                <th>Suspects</th>
-            </tr>
-        </thead>
-        <tbody id="suspect-table-body">
-        </tbody>
-    </table>
-    <table>
-        <thead>
-            <tr>
-                <th>Weapons</th>
-            </tr>
-        </thead>
-        <tbody id="weapon-table-body">
-        </tbody>
-    </table>
-    <table>
-        <thead>
-            <tr>
-                <th>Places</th>
-            </tr>
-        </thead>
-        <tbody id="place-table-body">
-        </tbody>
-    </table>
+<body class="container">
+    <div class="row">
+        <label>Game Type</label>
+        <select onchange="setTableData(this)">
+            <option default value="standard">Standard</option>
+            <option value="harry">Harry</option>
+        </select>
+    </div>
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <th>Suspects</th>
+                </tr>
+            </thead>
+            <tbody id="suspect-table-body">
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Weapons</th>
+                </tr>
+            </thead>
+            <tbody id="weapon-table-body">
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Places</th>
+                </tr>
+            </thead>
+            <tbody id="place-table-body">
+            </tbody>
+        </table>
+
+    </div>
     <footer>
         <script>
+
             function normalizeName(name) {
                 return name.trim().replace(/\s/g, '');
             }
@@ -81,9 +95,32 @@
                 document.getElementById(tableBodyId).innerHTML = tableRowHtml;
             }
 
-            setGroupTableRowHtml(['Orchid','Green', 'Mustard', 'Peacock', 'Plum', 'Scarlett'], 'suspect-table-body');
-            setGroupTableRowHtml(['Dagger', 'Candlestick', 'Revolver', 'Rope', 'Pipe', 'Wrench'], 'weapon-table-body');
-            setGroupTableRowHtml(['Hall', 'Lounge', 'Dining Room', 'Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study'], 'place-table-body');
+            const standardGameOptions = {
+                suspects: ['Orchid', 'Green', 'Mustard', 'Peacock', 'Plum', 'Scarlett'],
+                weapons: ['Dagger', 'Candlestick', 'Revolver', 'Rope', 'Pipe', 'Wrench'],
+                locations: ['Hall', 'Lounge', 'Dining Room', 'Kitchen', 'Ballroom', 'Conservatory', 'Billiard Room', 'Library', 'Study']
+            }
+
+            const harryGameOptions = {
+                suspects: ['Draco', 'Crabbe & Goyle', 'Lucius', 'Dolores Umbridge', 'Peter Pettigrew', 'Bellatrix'],
+                weapons: ['Sleeping Draught', 'Vanishing Cabinet', 'Portkey', 'Impedimenta', 'Petrificus Totalus', 'Madrake'],
+                locations: ['Great Hall', 'Hospital Wing', 'Room of Requirement', 'Potions Classroom', 'Trophy Room', 'Divination Classroom', 'Owlery', 'Library', 'Defense Agaisnt Dark Arts']
+            }
+
+            function setTableData(optionSelected) {
+                const gameOptions = optionSelected.value == 'standard' ? standardGameOptions : harryGameOptions;
+
+                setGroupTableRowHtml(gameOptions.suspects, 'suspect-table-body');
+                setGroupTableRowHtml(gameOptions.weapons, 'weapon-table-body');
+                setGroupTableRowHtml(gameOptions.locations, 'place-table-body');
+            }
+
+            $(document).ready(function () {
+                $('select').formSelect();
+                
+                //Default:
+                setTableData({ 'value': 'standard' });
+            });
 
         </script>
     </footer>
